@@ -7,7 +7,8 @@ from clvm.casts import int_from_bytes
 from clvm.EvalError import EvalError
 from clvm.operators import OPERATOR_LOOKUP
 from clvm.serialize import sexp_from_stream, sexp_to_stream
-from clvm_rs import MEMPOOL_MODE, run_chia_program, serialized_length, run_generator2
+from chia_rs import MEMPOOL_MODE, run_generator
+from clvm_rs import run_chia_program, serialized_length
 from clvm_tools.curry import curry, uncurry
 
 from chia.types.blockchain_format.sized_bytes import bytes32
@@ -244,7 +245,7 @@ class SerializedProgram:
     def run_with_cost(self, max_cost: int, *args) -> Tuple[int, Program]:
         return self._run(max_cost, 0, *args)
 
-    # returns an optional error code and an optional PySpendBundleConditions (from clvm_rs)
+    # returns an optional error code and an optional PySpendBundleConditions (from chia_rs)
     # exactly one of those will hold a value
     def run_as_generator(self, max_cost: int, flags: int, *args) -> Tuple[Optional[uint16], Optional[Any]]:
         serialized_args = b""
@@ -257,7 +258,7 @@ class SerializedProgram:
         else:
             serialized_args += _serialize(args[0])
 
-        return run_generator2(
+        return run_generator(
             self._buf,
             serialized_args,
             max_cost,

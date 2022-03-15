@@ -1,7 +1,7 @@
 import logging
 import time
 from typing import Dict, List, Optional
-from clvm_rs import MEMPOOL_MODE, COND_CANON_INTS, NO_NEG_DIV
+from chia_rs import MEMPOOL_MODE, COND_CANON_INTS, NO_NEG_DIV
 
 from clvm.casts import int_from_bytes, int_to_bytes
 from chia.consensus.cost_calculator import NPCResult
