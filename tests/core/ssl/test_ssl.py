@@ -10,21 +10,16 @@ from chia.server.server import ChiaServer, ssl_context_for_client
 from chia.server.ws_connection import WSChiaConnection
 from chia.ssl.create_ssl import generate_ca_signed_cert
 from chia.types.peer_info import PeerInfo
-from tests.block_tools import test_constants
 from chia.util.ints import uint16
-from tests.setup_nodes import (
-    setup_harvester_farmer,
-    setup_introducer,
-    setup_simulators_and_wallets,
-    setup_timelord,
-)
+from tests.block_tools import test_constants
+from tests.setup_nodes import setup_harvester_farmer, setup_introducer, setup_simulators_and_wallets, setup_timelord
 from tests.util.socket import find_available_listen_port
 
 
 async def establish_connection(server: ChiaServer, self_hostname: str, ssl_context) -> bool:
     timeout = aiohttp.ClientTimeout(total=10)
     session = aiohttp.ClientSession(timeout=timeout)
-    dummy_port = 5  # this does not matter
+    dummy_port = uint16(5)  # this does not matter
     try:
         incoming_queue: asyncio.Queue = asyncio.Queue()
         url = f"wss://{self_hostname}:{server._port}/ws"

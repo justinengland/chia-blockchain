@@ -1,6 +1,5 @@
-import logging
 import asyncio
-
+import logging
 from secrets import token_bytes
 from typing import Dict, List
 
@@ -8,23 +7,23 @@ from chia.consensus.constants import ConsensusConstants
 from chia.full_node.full_node_api import FullNodeAPI
 from chia.server.start_service import Service
 from chia.server.start_wallet import service_kwargs_for_wallet
-from tests.block_tools import create_block_tools_async, test_constants, BlockTools
-from tests.setup_services import (
-    setup_full_node,
-    setup_harvester,
-    setup_farmer,
-    setup_introducer,
-    setup_vdf_clients,
-    setup_timelord,
-    setup_vdf_client,
-    setup_daemon,
-)
-from tests.util.keyring import TempKeyring
-from tests.util.socket import find_available_listen_port
 from chia.util.hash import std_hash
 from chia.util.ints import uint16, uint32
 from chia.util.keychain import bytes_to_mnemonic
+from tests.block_tools import BlockTools, create_block_tools_async, test_constants
+from tests.setup_services import (
+    setup_daemon,
+    setup_farmer,
+    setup_full_node,
+    setup_harvester,
+    setup_introducer,
+    setup_timelord,
+    setup_vdf_client,
+    setup_vdf_clients,
+)
 from tests.time_out_assert import time_out_assert_custom_interval
+from tests.util.keyring import TempKeyring
+from tests.util.socket import find_available_listen_port
 
 
 def cleanup_keyring(keyring: TempKeyring):
@@ -401,7 +400,9 @@ async def setup_full_system(
                 db_version=db_version,
             ),
             setup_vdf_client(shared_b_tools, shared_b_tools.config["self_hostname"], vdf2_port),
-            setup_timelord(timelord1_port, 1000, timelord1_rpc_port, vdf2_port, True, consensus_constants, b_tools_1),
+            setup_timelord(
+                timelord1_port, uint16(1000), timelord1_rpc_port, vdf2_port, True, consensus_constants, b_tools_1
+            ),
         ]
 
         if connect_to_daemon:

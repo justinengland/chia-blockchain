@@ -28,7 +28,7 @@ async def disconnect_all_and_reconnect(server: ChiaServer, reconnect_to: ChiaSer
 
 
 async def add_dummy_connection(
-    server: ChiaServer, self_hostname: str, dummy_port: int, type: NodeType = NodeType.FULL_NODE
+    server: ChiaServer, self_hostname: str, dummy_port: uint16, type: NodeType = NodeType.FULL_NODE
 ) -> Tuple[asyncio.Queue, bytes32]:
     timeout = aiohttp.ClientTimeout(total=10)
     session = aiohttp.ClientSession(timeout=timeout)
